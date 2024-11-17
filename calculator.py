@@ -3,23 +3,49 @@ class Calculator:
         return a + b
 
     def subtract(self, a, b):
-        return b - a
+        return a - b
 
     def multiply(self, a, b):
         result = 0
-        for i in range(b+1):
+        is_negative = False
+        if a < 0 and b < 0:
+            a = -a
+            b = -b
+        elif a < 0:
+            a = -a
+            is_negative = True
+        elif b < 0:
+            b = -b
+            is_negative = True
+
+        for i in range(b):
             result = self.add(result, a)
+        if is_negative:
+            result = -result
+    
         return result
 
     def divide(self, a, b):
+        if b == 0:
+            raise ValueError("Division by zero is not allowed.")
         result = 0
-        while a > b:
+        is_negative = False
+        
+        if (a < 0) != (b < 0):  # Check if signs of a and b are opposite
+            is_negative = True
+    
+        a = -a if a < 0 else a
+        b = -b if b < 0 else b
+        
+        while a >= b:
             a = self.subtract(a, b)
             result += 1
-        return result
+        return -result if is_negative else result
     
     def modulo(self, a, b):
-        while a <= b:
+        if b == 0:
+            raise ValueError("Modulo by zero is not allowed.")
+        while a >= b:
             a = a-b
         return a
 
